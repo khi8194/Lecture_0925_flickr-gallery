@@ -1,4 +1,5 @@
-let dataType = "";
+// let dataType = "";
+let optString = "";
 const [btnMine, btnPopular] = document.querySelectorAll("nav button");
 //searchBox 안쪽에 있는 두번째 요소인 input, 세번째 요소인 btnSearch를 비구조 할당으로 변수 할당
 const [_, inputSearch, btnSearch] = document.querySelector(".searchBox").children;
@@ -15,6 +16,8 @@ btnPopular.addEventListener("click", () => fetchFlickr({ type: "interest" }));
 //검색 버튼 클릭 시
 btnSearch.addEventListener("click", () => {
 	//인풋요소의 value값(검색어)을 tags에 담아 fetchFlickr 함수 호출
+	//검색어를 입력하지 않고 검색버튼 클릭시 함수 강제 중지
+	if (!inputSearch.value) return;
 	fetchFlickr({ type: "search", tags: inputSearch.value });
 	//호출시 input 요소의 검색어는 지워줌
 	inputSearch.value = "";
@@ -29,9 +32,17 @@ document.body.addEventListener("click", e => {
 
 //flickr fetching함수
 function fetchFlickr(opt) {
-	//타입이 opt라는 파라미터 객체 안쪽에 들어가 있기 때문에 opt.type
-	if (opt.type === dataType) return;
-	dataType = opt.type;
+	// //타입이 opt라는 파라미터 객체 안쪽에 들어가 있기 때문에 opt.type
+	// if (opt.type === dataType) return;
+	// dataType = opt.type;
+
+	//참조링크 비교가 아닌 값 자체를 비교하기 위해서
+	//opt객체를 강제로 문자화해서 stringifyOpt변수에 저장
+	let stringifyOpt = JSON.stringify(opt);
+	//문자화된 옵션객체 자체를 비교처리
+	if (stringifyOpt === optString) return;
+	//문자화된 옵션 객체를 전역변수는 optString에 저장해서 다음번 비교에 사용
+	optString = stringifyOpt;
 
 	const api_key = "21e294ad0ec03a32d7355980457d9e11";
 	const baseURL = `https://www.flickr.com/services/rest/?api_key=${api_key}&method=`;
@@ -101,11 +112,11 @@ function createModal(e) {
 	const modal = document.createElement("aside");
 	modal.classList.add("modal");
 	modal.innerHTML = `
-      <div class='con'>
-        <img src=${imgSrc} />
-      </div>
-      <button class='btnClose'>CLOSE</button>
-    `;
+    <div class='con'>
+      <img src=${imgSrc} />
+    </div>
+    <button class='btnClose'>CLOSE</button>
+  `;
 	document.body.append(modal);
 }
 
