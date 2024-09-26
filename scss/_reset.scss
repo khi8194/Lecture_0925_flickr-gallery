@@ -12,3 +12,8 @@ a {
   text-decoration: none;
   color: inherit;
 }
+.hide {
+  position: absolute;
+  top: -999999px;
+  opacity: 0;
+}

@@ -12,26 +12,26 @@ btnPopular.addEventListener("click", () => fetchFlickr("interest"));
 document.body.addEventListener("click", (e) => {
 	if (e.target.className === "thumb") createModal(e);
 	if (e.target.className === "btnClose") removeModal();
+	if (e.target.className === "userID") fetchFlickr(e.target.innerText);
 });
 
 //flickr fetching함수
 function fetchFlickr(type) {
-	//현재 인수로 전달된 type정보와 현재 출력되고 있는 dataType이 동일하면
-	//다시 data fetching할 필요가 없으므로 return으로 강제 함수 종료
-	//만약 타입이 다르면 해당 if문 무시
 	if (type === dataType) return;
-	//인수로 전달된 타입명으로 현재 dataType을 변경
 	dataType = type;
 
-	// const list = document.querySelector(".list");
 	const api_key = "21e294ad0ec03a32d7355980457d9e11";
 	const baseURL = `https://www.flickr.com/services/rest/?api_key=${api_key}&method=`;
 	const myID = "197119297@N02";
 	const method_mine = "flickr.people.getPhotos";
 	const method_interest = "flickr.interestingness.getList";
 	let url_mine = `${baseURL}${method_mine}&user_id=${myID}&nojsoncallback=1&format=json`;
+	let url_user = `${baseURL}${method_mine}&user_id=${type}&nojsoncallback=1&format=json`;
 	let url_interest = `${baseURL}${method_interest}&nojsoncallback=1&format=json`;
-	let result_url = type === "mine" ? url_mine : url_interest;
+	let result_url = "";
+	if (type === "mine") result_url = url_mine;
+	else if (type === "interest") result_url = url_interest;
+	else result_url = url_user;
 
 	fetch(result_url)
 		.then((data) => data.json())
@@ -40,6 +40,7 @@ function fetchFlickr(type) {
 			createList(picArr);
 		});
 }
+
 //목록 생성 함수
 function createList(dataArr) {
 	const list = document.querySelector(".list");
@@ -47,25 +48,28 @@ function createList(dataArr) {
 
 	dataArr.forEach((pic) => {
 		tags += `
-      <li>
-        <figure class='pic'>
-          <img class='thumb' src="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_z.jpg" alt="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg" />
-        </figure>
-        <h2>${pic.title}</h2>
-        <div class='profile'>
-          <img src='http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg' alt=${pic.owner} /> <span>${pic.owner}</span>
-        </div>
-      </li>
-    `;
+        <li>
+          <figure class='pic'>
+            <img class='thumb' src="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_z.jpg" alt="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg" />
+          </figure>
+          <h2>${pic.title}</h2>
+          <div class='profile'>
+            <img src='http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg' alt=${pic.owner} /> <span class='userID'>${pic.owner}</span>
+          </div>
+        </li>
+      `;
 	});
 
 	list.innerHTML = tags;
+
 	setDefImg();
 }
+
 //이미지 엑박시 대체이미지 연결 함수
 function setDefImg() {
 	const profilePic = document.querySelectorAll(".profile img");
 	console.log(profilePic);
+
 	profilePic.forEach(
 		(imgEl) =>
 			(imgEl.onerror = () =>
@@ -79,7 +83,6 @@ function setDefImg() {
 //모달생성 함수
 function createModal(e) {
 	const imgSrc = e.target.getAttribute("alt");
-
 	const modal = document.createElement("aside");
 	modal.classList.add("modal");
 	modal.innerHTML = `
@@ -95,12 +98,3 @@ function createModal(e) {
 function removeModal() {
 	document.querySelector(".modal").remove();
 }
-
-//미션
-//- createList()라는 함수를 생성
-//- fetchFlickr함수에서 동적 리스트 생성하는 코드를 createList함수로 분리
-//- 인수로 데이터 배열을 전달받아 목록 출력
-//-9시 25분 까지
-
-//createList안쪽에서 프로필 이미지 엑박시 대체이미지 바꿔치키 하는 기능을 또다른 함수로 분리
-//setDefaultImage() - 9시 40분까지 고민
