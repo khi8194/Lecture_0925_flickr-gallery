@@ -15,11 +15,13 @@ main {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+
     nav {
       margin-bottom: 40px;
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
+
       button {
         display: inline-block;
         padding: 10px 20px;
@@ -30,10 +32,12 @@ main {
         color: #fff;
         opacity: 0.8;
         transition: 0.5s;
+
         &:hover {
           transform: scale(1.2);
           opacity: 1;
         }
+
         &:nth-of-type(1) {
           background: linear-gradient(45deg, aqua, #49d3fd);
           box-shadow: 10px 10px 20px rgba(0, 255, 255, 0.5);
@@ -51,18 +55,20 @@ main {
         border: 1px solid #bbb;
         border-radius: 3px;
       }
+
       button {
-        width: 100px;
+        width: 80px;
         height: 25px;
         background: #444;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-        font: 0.6rem/25px "orbitron";
+        font: 600 0.6rem/25px "orbitron";
         color: #fff;
         text-align: center;
         border: none;
         position: relative;
         top: -1px;
         border-radius: 3px;
+        letter-spacing: 1px;
       }
     }
   }
