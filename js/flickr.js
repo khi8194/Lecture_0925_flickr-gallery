@@ -15,7 +15,7 @@ document.body.addEventListener("click", (e) => {
 
 //flickr fetching함수
 function fetchFlickr(type) {
-	const list = document.querySelector(".list");
+	// const list = document.querySelector(".list");
 	const api_key = "21e294ad0ec03a32d7355980457d9e11";
 	const baseURL = `https://www.flickr.com/services/rest/?api_key=${api_key}&method=`;
 	const myID = "197119297@N02";
@@ -29,34 +29,39 @@ function fetchFlickr(type) {
 		.then((data) => data.json())
 		.then((json) => {
 			const picArr = json.photos.photo;
-			let tags = "";
-
-			picArr.forEach((pic) => {
-				tags += `
-        <li>
-          <figure class='pic'>
-            <img class='thumb' src="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_z.jpg" alt="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg" />
-          </figure>
-          <h2>${pic.title}</h2>
-          <div class='profile'>
-            <img src='http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg' alt=${pic.owner} /> <span>${pic.owner}</span>
-          </div>
-        </li>
-      `;
-			});
-
-			list.innerHTML = tags;
-			const profilePic = document.querySelectorAll(".profile img");
-			console.log(profilePic);
-			profilePic.forEach(
-				(imgEl) =>
-					(imgEl.onerror = () =>
-						imgEl.setAttribute(
-							"src",
-							"https://www.flickr.com/images/buddyicon.gif"
-						))
-			);
+			createList(picArr);
 		});
+}
+//목록 생성 함수
+function createList(dataArr) {
+	const list = document.querySelector(".list");
+	let tags = "";
+
+	dataArr.forEach((pic) => {
+		tags += `
+      <li>
+        <figure class='pic'>
+          <img class='thumb' src="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_z.jpg" alt="https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg" />
+        </figure>
+        <h2>${pic.title}</h2>
+        <div class='profile'>
+          <img src='http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg' alt=${pic.owner} /> <span>${pic.owner}</span>
+        </div>
+      </li>
+    `;
+	});
+
+	list.innerHTML = tags;
+	const profilePic = document.querySelectorAll(".profile img");
+	console.log(profilePic);
+	profilePic.forEach(
+		(imgEl) =>
+			(imgEl.onerror = () =>
+				imgEl.setAttribute(
+					"src",
+					"https://www.flickr.com/images/buddyicon.gif"
+				))
+	);
 }
 
 //모달생성 함수
@@ -78,3 +83,9 @@ function createModal(e) {
 function removeModal() {
 	document.querySelector(".modal").remove();
 }
+
+//미션
+//- createList()라는 함수를 생성
+//- fetchFlickr함수에서 동적 리스트 생성하는 코드를 createList함수로 분리
+//- 인수로 데이터 배열을 전달받아 목록 출력
+//-9시 25분 까지
