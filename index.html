@@ -20,11 +20,18 @@
         <button>Popular Gallery</button>
       </nav>
 
-      <article class="searchBox">
+      <!-- <article class="searchBox">
         <label for="search" class="hide">검색어 입력</label>
         <input type="text" id="search" />
         <button>Search</button>
-      </article>
+      </article> -->
+
+      <!-- form요소에 action에 전달될 타겟위치를 지정한뒤 내부적으로 click이나 enter를 입력하면 자동으로 안쪽 폼요소의 값들을 action에 지정된 타겟위치로 전달해주는 submit 이벤트 발생 -->
+      <form class="searchBox">
+        <label for="search" class="hide">검색어 입력</label>
+        <input type="text" id="search" />
+        <button>Search</button>
+      </form>
 
     </section>
 

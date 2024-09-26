@@ -1,25 +1,21 @@
 // let dataType = "";
 let optString = "";
 const [btnMine, btnPopular] = document.querySelectorAll("nav button");
-//searchBox 안쪽에 있는 두번째 요소인 input, 세번째 요소인 btnSearch를 비구조 할당으로 변수 할당
-const [_, inputSearch, btnSearch] = document.querySelector(".searchBox").children;
-// let dataType = "";
+// const [_, inputSearch, btnSearch] = document.querySelector(".searchBox").children;
+const searchBox = document.querySelector(".searchBox");
+const inputSearch = searchBox.querySelector("input");
 
-//스크립트 처음 로드시에는 내갤러리 출력
-//fetch함수 호출시 인수값을 객체 형태로 전달
-//이유: search, user타입 갤러리는 타입외에도 유저명, 검색어 등의 추가 정보값을 제공해야 되기 때문
 fetchFlickr({ type: "mine" });
-
-//각 버튼 클릭시 갤러리 타입 변경
 btnMine.addEventListener("click", () => fetchFlickr({ type: "mine" }));
 btnPopular.addEventListener("click", () => fetchFlickr({ type: "interest" }));
-//검색 버튼 클릭 시
-btnSearch.addEventListener("click", () => {
-	//인풋요소의 value값(검색어)을 tags에 담아 fetchFlickr 함수 호출
-	//검색어를 입력하지 않고 검색버튼 클릭시 함수 강제 중지
+
+// btnSearch.addEventListener("submit", () => {
+//form요소에 직접 submit 이벤트 연결
+searchBox.addEventListener("submit", e => {
+	//해당 폼요소를 실제 서버로 전달할 것이 아니기에 e.preventDefault()로 form전송 기능을 막아줌
+	e.preventDefault();
 	if (!inputSearch.value) return;
 	fetchFlickr({ type: "search", tags: inputSearch.value });
-	//호출시 input 요소의 검색어는 지워줌
 	inputSearch.value = "";
 });
 
